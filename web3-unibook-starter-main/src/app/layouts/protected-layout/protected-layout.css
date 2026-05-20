@@ -59,8 +59,13 @@
 
 .nav-link,
 .logout-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 5.5rem;
   border-radius: 999px;
   font-weight: 700;
+  text-align: center;
 }
 
 .user-chip {

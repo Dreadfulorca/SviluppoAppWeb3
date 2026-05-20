@@ -4,23 +4,19 @@
 
     <nav class="app-nav" aria-label="Navigazione principale">
       <a mat-button routerLink="/home" routerLinkActive="nav-link--active" class="nav-link">
-        <mat-icon aria-hidden="true">home</mat-icon>
-        <span>Home</span>
+        Home
       </a>
       <a mat-button routerLink="/profile" routerLinkActive="nav-link--active" class="nav-link">
-        <mat-icon aria-hidden="true">account_circle</mat-icon>
-        <span>Profilo</span>
+        Profilo
       </a>
       <a mat-button routerLink="/users/search" routerLinkActive="nav-link--active" class="nav-link">
-        <mat-icon aria-hidden="true">search</mat-icon>
-        <span>Cerca</span>
+        Cerca
       </a>
       @if (currentUser(); as user) {
       <p class="user-chip">{{ user.firstName }} {{ user.lastName }}</p>
       }
       <button mat-flat-button type="button" class="logout-button" (click)="logout()">
-        <mat-icon aria-hidden="true">logout</mat-icon>
-        <span>Logout</span>
+        Logout
       </button>
     </nav>
   </mat-toolbar>
