@@ -1,13 +1,13 @@
 import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
+import { RouterLink } from '@angular/router';
 
 import { Post } from '../../core/api/models/post.types';
 
 @Component({
   selector: 'app-post-card',
-  imports: [MatButtonModule, MatCardModule, MatIconModule],
+  imports: [MatButtonModule, MatCardModule, RouterLink],
   templateUrl: './post-card.html',
   styleUrl: './post-card.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
