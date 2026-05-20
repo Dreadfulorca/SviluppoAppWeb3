@@ -1,0 +1,108 @@
+<section class="auth-page">
+  <div class="auth-card">
+    <p class="eyebrow">Registrazione</p>
+    <h1>Registra un nuovo account</h1>
+
+    <form class="auth-form" [formRoot]="form">
+      <div class="auth-grid">
+        <label>
+          <span>Nome</span>
+          <input type="text" [formField]="form.firstName" autocomplete="given-name"
+            [class.is-invalid]="form.firstName().touched() && form.firstName().invalid()"
+            [attr.aria-invalid]="form.firstName().touched() && form.firstName().invalid() ? 'true' : null" />
+
+          @if (form.firstName().touched() && form.firstName().invalid()) {
+          <div class="field-errors">
+            @for (error of form.firstName().errors(); track error) {
+            <p class="inline-error" role="alert">{{ error.message ?? 'Inserisci il nome.' }}</p>
+            }
+          </div>
+          }
+        </label>
+
+        <label>
+          <span>Cognome</span>
+          <input type="text" [formField]="form.lastName" autocomplete="family-name"
+            [class.is-invalid]="form.lastName().touched() && form.lastName().invalid()"
+            [attr.aria-invalid]="form.lastName().touched() && form.lastName().invalid() ? 'true' : null" />
+
+          @if (form.lastName().touched() && form.lastName().invalid()) {
+          <div class="field-errors">
+            @for (error of form.lastName().errors(); track error) {
+            <p class="inline-error" role="alert">{{ error.message ?? 'Inserisci il cognome.' }}</p>
+            }
+          </div>
+          }
+        </label>
+      </div>
+
+      <label>
+        <span>Data di nascita</span>
+        <input type="date" [formField]="form.birthDate"
+          [class.is-invalid]="form.birthDate().touched() && form.birthDate().invalid()"
+          [attr.aria-invalid]="form.birthDate().touched() && form.birthDate().invalid() ? 'true' : null" />
+
+        @if (form.birthDate().touched() && form.birthDate().invalid()) {
+        <div class="field-errors">
+          @for (error of form.birthDate().errors(); track error) {
+          <p class="inline-error" role="alert">
+            {{ error.message ?? 'Inserisci la data di nascita.' }}
+          </p>
+          }
+        </div>
+        }
+      </label>
+
+      <label>
+        <span>Email</span>
+        <input type="email" [formField]="form.email" autocomplete="email"
+          [class.is-invalid]="form.email().touched() && form.email().invalid()"
+          [attr.aria-invalid]="form.email().touched() && form.email().invalid() ? 'true' : null" />
+
+        @if (form.email().touched() && form.email().invalid()) {
+        <div class="field-errors">
+          @for (error of form.email().errors(); track error) {
+          <p class="inline-error" role="alert">
+            {{ error.message ?? 'Inserisci un indirizzo email valido.' }}
+          </p>
+          }
+        </div>
+        }
+      </label>
+
+      <label>
+        <span>Password</span>
+        <input type="password" [formField]="form.password" autocomplete="new-password"
+          [class.is-invalid]="form.password().touched() && form.password().invalid()"
+          [attr.aria-invalid]="form.password().touched() && form.password().invalid() ? 'true' : null" />
+
+        @if (form.password().touched() && form.password().invalid()) {
+        <div class="field-errors">
+          @for (error of form.password().errors(); track error) {
+          <p class="inline-error" role="alert">{{ error.message ?? 'Inserisci la password.' }}</p>
+          }
+        </div>
+        }
+      </label>
+
+      @if (form().errors().length) {
+      <div class="field-errors">
+        @for (error of form().errors(); track error) {
+        <p class="inline-error" role="alert">
+          {{ error.message ?? 'Registrazione non riuscita. Controlla i dati inseriti.' }}
+        </p>
+        }
+      </div>
+      }
+
+      <button type="submit" class="primary-button" [disabled]="form().submitting()">
+        {{ form().submitting() ? 'Registrazione in corso...' : 'Registrati' }}
+      </button>
+    </form>
+
+    <p class="auth-switch">
+      Hai gia un account?
+      <a routerLink="/login">Vai al login</a>
+    </p>
+  </div>
+</section>

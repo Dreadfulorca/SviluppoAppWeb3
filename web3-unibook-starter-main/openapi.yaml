@@ -1,0 +1,850 @@
+openapi: 3.0.3
+info:
+  title: Social App API
+  description: >
+    Backend REST per il progetto finale del corso Angular.
+    L'autenticazione avviene tramite access token JWT e refresh token: dopo il
+    login, il campo `token` va incluso nell'header `Authorization: Bearer <token>`
+    in tutte le richieste protette. Quando l'access token scade, il client puo
+    usare `POST /auth-refresh` con `refreshToken` per ottenere una sessione
+    ruotata; `POST /auth-logout` revoca invece il refresh token della sessione
+    corrente.
+  version: 1.0.0
+
+servers:
+  - url: http://127.0.0.1:54321/functions/v1
+    description: Supabase Edge Functions locali
+
+security:
+  - bearerAuth: []
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+
+    # ─── AUTH ────────────────────────────────────────────────────────────────
+
+    RegisterRequest:
+      type: object
+      required: [email, password, firstName, lastName, birthDate]
+      properties:
+        email:
+          type: string
+          format: email
+          example: mario.rossi@email.it
+        password:
+          type: string
+          minLength: 8
+          example: password123
+        firstName:
+          type: string
+          example: Mario
+        lastName:
+          type: string
+          example: Rossi
+        birthDate:
+          type: string
+          format: date
+          example: "1999-05-15"
+
+    LoginRequest:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+          format: email
+          example: mario.rossi@email.it
+        password:
+          type: string
+          example: password123
+
+    RefreshTokenRequest:
+      type: object
+      required: [refreshToken]
+      properties:
+        refreshToken:
+          type: string
+          description: Refresh token attivo da usare per ottenere una sessione ruotata
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.refresh...
+
+    AuthResponse:
+      type: object
+      required: [token, refreshToken, user]
+      properties:
+        token:
+          type: string
+          description: JWT da includere nelle successive richieste
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        refreshToken:
+          type: string
+          description: Refresh token da conservare per ottenere una nuova sessione
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.refresh...
+        user:
+          $ref: '#/components/schemas/UserPrivate'
+
+    RefreshTokenResponse:
+      type: object
+      required: [token, refreshToken]
+      properties:
+        token:
+          type: string
+          description: Nuovo access token JWT da usare nelle richieste protette
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        refreshToken:
+          type: string
+          description: Nuovo refresh token ruotato che sostituisce quello precedente
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.refresh...
+
+    # ─── USER ────────────────────────────────────────────────────────────────
+
+    UserPrivate:
+      description: Dati completi dell'utente autenticato
+      type: object
+      properties:
+        id:
+          type: string
+          example: "u_abc123"
+        email:
+          type: string
+          example: mario.rossi@email.it
+        firstName:
+          type: string
+          example: Mario
+        lastName:
+          type: string
+          example: Rossi
+        birthDate:
+          type: string
+          format: date
+          example: "1999-05-15"
+        avatarUrl:
+          type: string
+          nullable: true
+          example: "https://example.com/avatar.jpg"
+        bio:
+          type: string
+          nullable: true
+          example: "Appassionato di libri e montagna."
+        followersCount:
+          type: integer
+          example: 42
+        followingCount:
+          type: integer
+          example: 17
+
+    UserPublic:
+      description: Profilo pubblico di un utente, visibile ad altri
+      type: object
+      properties:
+        id:
+          type: string
+          example: "u_abc123"
+        firstName:
+          type: string
+          example: Mario
+        lastName:
+          type: string
+          example: Rossi
+        avatarUrl:
+          type: string
+          nullable: true
+          example: "https://example.com/avatar.jpg"
+        bio:
+          type: string
+          nullable: true
+          example: "Appassionato di libri e montagna."
+        followersCount:
+          type: integer
+          example: 42
+        followingCount:
+          type: integer
+          example: 17
+        isFollowing:
+          type: boolean
+          description: >
+            True se l'utente autenticato segue già questo profilo.
+            False altrimenti.
+          example: false
+
+    UserSearchResult:
+      description: Elemento restituito dalla ricerca utenti
+      type: object
+      properties:
+        id:
+          type: string
+          example: "u_abc123"
+        firstName:
+          type: string
+          example: Mario
+        lastName:
+          type: string
+          example: Rossi
+        avatarUrl:
+          type: string
+          nullable: true
+          example: "https://example.com/avatar.jpg"
+
+    UpdateProfileRequest:
+      type: object
+      properties:
+        avatarUrl:
+          type: string
+          nullable: true
+          description: URL pubblica ottenuta da `POST /media-upload` con `kind=avatar`
+          example: "https://example.com/nuova-foto.jpg"
+        bio:
+          type: string
+          nullable: true
+          maxLength: 300
+          example: "Nuova bio aggiornata."
+
+    # ─── POST ────────────────────────────────────────────────────────────────
+
+    Post:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "p_xyz789"
+        author:
+          $ref: '#/components/schemas/UserSearchResult'
+        text:
+          type: string
+          maxLength: 500
+          example: "Oggi ho finito di leggere un libro fantastico!"
+        imageUrl:
+          type: string
+          nullable: true
+          example: "https://example.com/book.jpg"
+        createdAt:
+          type: string
+          format: date-time
+          example: "2025-05-04T10:30:00Z"
+        likesCount:
+          type: integer
+          example: 7
+        isLiked:
+          type: boolean
+          description: True se l'utente autenticato ha già messo like a questo post.
+          example: false
+
+    CreatePostRequest:
+      type: object
+      required: [text]
+      properties:
+        text:
+          type: string
+          maxLength: 500
+          example: "Primo post!"
+        imageUrl:
+          type: string
+          nullable: true
+          description: URL pubblica ottenuta da `POST /media-upload` con `kind=post`
+          example: "https://example.com/immagine.jpg"
+
+    MediaUploadRequest:
+      type: object
+      required: [kind, file]
+      properties:
+        kind:
+          type: string
+          enum: [avatar, post]
+          description: Tipo logico del media da caricare
+          example: avatar
+        file:
+          type: string
+          format: binary
+
+    MediaUploadResponse:
+      type: object
+      properties:
+        url:
+          type: string
+          format: uri
+          description: URL pubblica del file caricato, pronta da usare in `/users-me` o `/posts`
+          example: "https://example.com/storage/v1/object/public/avatars/u_abc123/avatar.jpg"
+
+    # ─── ERRORI ──────────────────────────────────────────────────────────────
+
+    MessageResponse:
+      type: object
+      required: [message]
+      properties:
+        message:
+          type: string
+          example: "Logout effettuato con successo"
+
+    ErrorResponse:
+      type: object
+      required: [message]
+      properties:
+        message:
+          type: string
+          example: "Risorsa non trovata."
+
+paths:
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  # AUTH
+  # ═══════════════════════════════════════════════════════════════════════════
+
+  /auth-register:
+    post:
+      tags: [Auth]
+      summary: Registrazione nuovo utente
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        '201':
+          description: Utente creato con successo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '409':
+          description: Email già registrata
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Dati non validi (campo mancante o formato errato)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth-login:
+    post:
+      tags: [Auth]
+      summary: Login utente
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Login riuscito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '401':
+          description: Credenziali non valide
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth-refresh:
+    post:
+      tags: [Auth]
+      summary: Rinnova la sessione con refresh token
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshTokenRequest'
+      responses:
+        '200':
+          description: Sessione rinnovata con successo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RefreshTokenResponse'
+        '401':
+          description: Refresh token mancante, scaduto o non valido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Body JSON non valido o campo `refreshToken` mancante
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth-logout:
+    post:
+      tags: [Auth]
+      summary: Logout utente e revoca del refresh token corrente
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshTokenRequest'
+      responses:
+        '200':
+          description: Logout eseguito correttamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        '401':
+          description: Token mancante o non valido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Body JSON non valido o campo `refreshToken` mancante
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  # MEDIA
+  # ═══════════════════════════════════════════════════════════════════════════
+
+  /media-upload:
+    post:
+      tags: [Media]
+      summary: Carica un'immagine per avatar o post
+      description: >
+        Usa questo endpoint quando devi caricare dal frontend un'immagine per il
+        profilo o per un post. Invia il file nel campo `file` del body
+        `multipart/form-data` e imposta `kind=avatar` oppure `kind=post`. La
+        `url` restituita puo poi essere usata nei payload JSON di `/users-me` o
+        `/posts`.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/MediaUploadRequest'
+      responses:
+        '201':
+          description: File caricato con successo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaUploadResponse'
+        '401':
+          description: Token mancante o non valido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '415':
+          description: Content-Type non supportato o file non immagine
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Body multipart non valido o campo `kind` errato
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Errore durante il salvataggio del file
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  # UTENTE / PROFILO
+  # ═══════════════════════════════════════════════════════════════════════════
+
+  /users-me:
+    get:
+      tags: [Utente]
+      summary: Profilo dell'utente autenticato
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPrivate'
+        '401':
+          description: Token mancante o non valido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    put:
+      tags: [Utente]
+      summary: Modifica foto profilo e/o bio
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateProfileRequest'
+      responses:
+        '200':
+          description: Profilo aggiornato
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPrivate'
+        '401':
+          description: Token mancante o non valido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /users-search:
+    get:
+      tags: [Utente]
+      summary: Ricerca utenti per nome o cognome
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Stringa di ricerca (nome o cognome)
+          schema:
+            type: string
+            minLength: 1
+            example: "Mario"
+      responses:
+        '200':
+          description: Lista degli utenti corrispondenti
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserSearchResult'
+        '401':
+          description: Token mancante o non valido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /users-by-id/{id}:
+    get:
+      tags: [Utente]
+      summary: Profilo pubblico di un utente
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: "u_abc123"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPublic'
+        '401':
+          description: Token mancante o non valido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Utente non trovato
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  # FOLLOWING
+  # ═══════════════════════════════════════════════════════════════════════════
+
+  /users-follow/{id}:
+    post:
+      tags: [Following]
+      summary: Segui un utente
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: "u_abc123"
+      responses:
+        '204':
+          description: Ora stai seguendo l'utente
+        '400':
+          description: Non puoi seguire te stesso, o stai già seguendo questo utente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Token mancante o non valido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Utente non trovato
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    delete:
+      tags: [Following]
+      summary: Smetti di seguire un utente
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: "u_abc123"
+      responses:
+        '204':
+          description: Hai smesso di seguire l'utente
+        '400':
+          description: Non stai seguendo questo utente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Token mancante o non valido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Utente non trovato
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  # POST
+  # ═══════════════════════════════════════════════════════════════════════════
+
+  /users-posts/{id}:
+    get:
+      tags: [Post]
+      summary: Lista post di un utente (per il profilo pubblico)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: "u_abc123"
+      responses:
+        '200':
+          description: Lista post in ordine cronologico inverso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Post'
+        '401':
+          description: Token mancante o non valido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Utente non trovato
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /posts:
+    post:
+      tags: [Post]
+      summary: Crea un nuovo post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePostRequest'
+      responses:
+        '201':
+          description: Post creato
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+        '401':
+          description: Token mancante o non valido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Testo mancante o troppo lungo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /posts/{id}:
+    delete:
+      tags: [Post]
+      summary: Elimina un proprio post
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: "p_xyz789"
+      responses:
+        '204':
+          description: Post eliminato
+        '401':
+          description: Token mancante o non valido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Il post non appartiene all'utente autenticato
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Post non trovato
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  # LIKE
+  # ═══════════════════════════════════════════════════════════════════════════
+
+  /posts-like/{id}:
+    post:
+      tags: [Like]
+      summary: Metti like a un post
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: "p_xyz789"
+      responses:
+        '204':
+          description: Like aggiunto
+        '400':
+          description: Hai già messo like a questo post
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Token mancante o non valido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Post non trovato
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    delete:
+      tags: [Like]
+      summary: Togli like a un post
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: "p_xyz789"
+      responses:
+        '204':
+          description: Like rimosso
+        '400':
+          description: Non hai messo like a questo post
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Token mancante o non valido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Post non trovato
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  # FEED
+  # ═══════════════════════════════════════════════════════════════════════════
+
+  /feed:
+    get:
+      tags: [Feed]
+      summary: Feed personale dell'utente autenticato
+      description: >
+        Restituisce i post degli utenti seguiti più i propri post,
+        in ordine cronologico inverso (più recenti prima).
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Post'
+        '401':
+          description: Token mancante o non valido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+tags:
+  - name: Auth
+    description: Registrazione e login
+  - name: Media
+    description: Upload immagini tramite edge function
+  - name: Utente
+    description: Profilo proprio e altrui, ricerca
+  - name: Following
+    description: Gestione dei follow/unfollow
+  - name: Post
+    description: Creazione ed eliminazione post
+  - name: Like
+    description: Like e unlike sui post
+  - name: Feed
+    description: Feed personale

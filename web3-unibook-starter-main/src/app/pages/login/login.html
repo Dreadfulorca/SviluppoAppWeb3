@@ -1,0 +1,59 @@
+<section class="auth-page">
+  <div class="auth-card">
+    <p class="eyebrow">Accesso</p>
+    <h1>Effettua il login</h1>
+
+    <form class="auth-form" [formRoot]="form">
+      <label>
+        <span>Email</span>
+        <input type="email" [formField]="form.email" autocomplete="email" placeholder="mario.rossi@email.it"
+          [class.is-invalid]="form.email().touched() && form.email().invalid()"
+          [attr.aria-invalid]="form.email().touched() && form.email().invalid() ? 'true' : null" />
+
+        @if (form.email().touched() && form.email().invalid()) {
+        <div class="field-errors">
+          @for (error of form.email().errors(); track error) {
+          <p class="inline-error" role="alert">
+            {{ error.message ?? 'Inserisci un indirizzo email valido.' }}
+          </p>
+          }
+        </div>
+        }
+      </label>
+
+      <label>
+        <span>Password</span>
+        <input type="password" [formField]="form.password" autocomplete="current-password" placeholder="password123"
+          [class.is-invalid]="form.password().touched() && form.password().invalid()"
+          [attr.aria-invalid]="form.password().touched() && form.password().invalid() ? 'true' : null" />
+
+        @if (form.password().touched() && form.password().invalid()) {
+        <div class="field-errors">
+          @for (error of form.password().errors(); track error) {
+          <p class="inline-error" role="alert">{{ error.message ?? 'Inserisci la password.' }}</p>
+          }
+        </div>
+        }
+      </label>
+
+      @if (form().errors().length) {
+      <div class="field-errors">
+        @for (error of form().errors(); track error) {
+        <p class="inline-error" role="alert">
+          {{ error.message ?? 'Accesso non riuscito. Verifica le credenziali.' }}
+        </p>
+        }
+      </div>
+      }
+
+      <button type="submit" class="primary-button" [disabled]="form().submitting()">
+        {{ form().submitting() ? 'Accesso in corso...' : 'Accedi' }}
+      </button>
+    </form>
+
+    <p class="auth-switch">
+      Non hai ancora un account?
+      <a routerLink="/register">Registrati</a>
+    </p>
+  </div>
+</section>
