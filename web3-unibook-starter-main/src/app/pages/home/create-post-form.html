@@ -1,0 +1,57 @@
+<form class="create-post-form" [formRoot]="form">
+  <label class="text-field">
+    <span>Testo</span>
+    <textarea
+      matInput
+      rows="5"
+      [formField]="form.text"
+      [class.is-invalid]="form.text().touched() && form.text().invalid()"
+      [attr.aria-invalid]="form.text().touched() && form.text().invalid() ? 'true' : null"
+    ></textarea>
+  </label>
+
+  <p class="counter" aria-live="polite">{{ model().text.length }}/500</p>
+
+  @if (form.text().touched() && form.text().invalid()) {
+  <div class="field-errors">
+    @for (error of form.text().errors(); track error) {
+    <p class="inline-error" role="alert">
+      {{ error.message ?? 'Inserisci un testo valido.' }}
+    </p>
+    }
+  </div>
+  }
+
+  <label class="file-field">
+    <span>Immagine opzionale</span>
+    <input #postImage type="file" accept="image/*" (change)="onImageSelected($event)" />
+  </label>
+
+  @if (selectedImage(); as image) {
+  <p class="selected-file">
+    <mat-icon aria-hidden="true">image</mat-icon>
+    <span>{{ image.name }}</span>
+  </p>
+  }
+
+  @if (fileError()) {
+  <div class="field-errors">
+    <p class="inline-error" role="alert">{{ fileError() }}</p>
+  </div>
+  }
+
+  @if (form().errors().length) {
+  <div class="field-errors">
+    @for (error of form().errors(); track error) {
+    <p class="inline-error" role="alert">
+      {{ error.message ?? 'Creazione del post non riuscita.' }}
+    </p>
+    }
+  </div>
+  }
+
+  <button mat-flat-button type="submit" [disabled]="form().submitting() || uploading()">
+    <mat-icon aria-hidden="true">send</mat-icon>
+    <span>{{ form().submitting() || uploading() ? 'Pubblicazione...' : 'Pubblica' }}</span>
+  </button>
+</form>

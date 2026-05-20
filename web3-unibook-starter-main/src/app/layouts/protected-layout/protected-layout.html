@@ -1,15 +1,29 @@
 <div class="app-shell">
-  <header class="app-header">
-    <a class="brand" routerLink="/home">UniBook Starter</a>
+  <mat-toolbar class="app-header">
+    <a class="brand" routerLink="/home" aria-label="Vai alla home">UniBook</a>
 
     <nav class="app-nav" aria-label="Navigazione principale">
-      <a routerLink="/home" routerLinkActive="nav-link--active" class="nav-link">Home</a>
+      <a mat-button routerLink="/home" routerLinkActive="nav-link--active" class="nav-link">
+        <mat-icon aria-hidden="true">home</mat-icon>
+        <span>Home</span>
+      </a>
+      <a mat-button routerLink="/profile" routerLinkActive="nav-link--active" class="nav-link">
+        <mat-icon aria-hidden="true">account_circle</mat-icon>
+        <span>Profilo</span>
+      </a>
+      <a mat-button routerLink="/users/search" routerLinkActive="nav-link--active" class="nav-link">
+        <mat-icon aria-hidden="true">search</mat-icon>
+        <span>Cerca</span>
+      </a>
       @if (currentUser(); as user) {
       <p class="user-chip">{{ user.firstName }} {{ user.lastName }}</p>
       }
-      <button type="button" class="logout-button" (click)="logout()">Logout</button>
+      <button mat-flat-button type="button" class="logout-button" (click)="logout()">
+        <mat-icon aria-hidden="true">logout</mat-icon>
+        <span>Logout</span>
+      </button>
     </nav>
-  </header>
+  </mat-toolbar>
 
   <main class="app-main">
     <router-outlet />

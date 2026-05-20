@@ -10,6 +10,11 @@
 
   <div class="grid">
     <article class="panel">
+      <h2>Pubblica un post</h2>
+      <app-create-post-form (postCreated)="onPostCreated($event)" />
+    </article>
+
+    <article class="panel">
       <h2>Sessione attiva</h2>
       <dl>
         <div>
@@ -56,6 +61,12 @@
       </div>
       }
 
+      @if (actionError()) {
+      <div class="status-box status-box--error" role="alert">
+        <p>{{ actionError() }}</p>
+      </div>
+      }
+
       @if (isFeedLoading() && !feedPosts().length) {
       <p class="status-box" role="status">Caricamento feed...</p>
       } @else if (isFeedEmpty()) {
@@ -63,29 +74,13 @@
       } @else if (feedPosts().length) {
       <div class="feed-list">
         @for (post of feedPosts(); track post.id) {
-        <article class="feed-card">
-          <div class="feed-card__meta">
-            <div>
-              <h3>{{ post.author.firstName }} {{ post.author.lastName }}</h3>
-              <p>{{ post.createdAt }}</p>
-            </div>
-
-            <div class="feed-card__stats">
-              <span>{{ post.likesCount }} like</span>
-
-              @if (post.isLiked) {
-              <span class="feed-card__liked">Ti piace</span>
-              }
-            </div>
-          </div>
-
-          <p class="feed-card__text">{{ post.text }}</p>
-
-          @if (post.imageUrl) {
-          <img class="feed-card__image" [src]="post.imageUrl"
-            [alt]="'Immagine del post di ' + post.author.firstName + ' ' + post.author.lastName" />
-          }
-        </article>
+        <app-post-card
+          [post]="post"
+          [currentUserId]="user.id"
+          [busy]="actionPostId() === post.id"
+          (likeToggled)="togglePostLike($event)"
+          (postRemoved)="removePost($event)"
+        />
         }
       </div>
       }

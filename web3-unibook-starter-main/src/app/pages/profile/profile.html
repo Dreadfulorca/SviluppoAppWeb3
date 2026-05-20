@@ -1,0 +1,35 @@
+<section class="page-shell" aria-labelledby="profile-heading">
+  @if (currentUser(); as user) {
+  <header class="page-header">
+    <p class="eyebrow">Profilo personale</p>
+    <h1 id="profile-heading">{{ user.firstName }} {{ user.lastName }}</h1>
+    <a mat-flat-button routerLink="/profile/edit">
+      <mat-icon aria-hidden="true">edit</mat-icon>
+      <span>Modifica profilo</span>
+    </a>
+  </header>
+
+  <dl class="profile-grid">
+    <div>
+      <dt>Email</dt>
+      <dd>{{ user.email }}</dd>
+    </div>
+    <div>
+      <dt>Data di nascita</dt>
+      <dd>{{ user.birthDate }}</dd>
+    </div>
+    <div>
+      <dt>Follower</dt>
+      <dd>{{ user.followersCount }}</dd>
+    </div>
+    <div>
+      <dt>Seguiti</dt>
+      <dd>{{ user.followingCount }}</dd>
+    </div>
+    <div class="profile-grid__full">
+      <dt>Bio</dt>
+      <dd>{{ user.bio || 'Nessuna bio inserita.' }}</dd>
+    </div>
+  </dl>
+  }
+</section>

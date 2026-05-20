@@ -21,6 +21,8 @@
   background: rgba(255, 255, 255, 0.82);
   backdrop-filter: blur(18px);
   box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+  min-height: auto;
+  height: auto;
 }
 
 .brand {
@@ -39,17 +41,9 @@
   flex-wrap: wrap;
 }
 
-.nav-link,
-.logout-button {
-  border: 0;
-  border-radius: 999px;
-  padding: 0.7rem 1rem;
-  font: inherit;
-  font-weight: 700;
+.nav-link {
   text-decoration: none;
-  background: rgba(15, 23, 42, 0.06);
   color: #0f172a;
-  cursor: pointer;
 }
 
 .nav-link--active {
@@ -58,8 +52,15 @@
 }
 
 .logout-button {
-  background: #0f172a;
+  --mdc-filled-button-container-color: #0f172a;
+  --mdc-filled-button-label-text-color: #ffffff;
   color: white;
+}
+
+.nav-link,
+.logout-button {
+  border-radius: 999px;
+  font-weight: 700;
 }
 
 .user-chip {
