@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -7,7 +8,7 @@ import { Post } from '../../core/api/models/post.types';
 
 @Component({
   selector: 'app-post-card',
-  imports: [MatButtonModule, MatCardModule, RouterLink],
+  imports: [DatePipe, MatButtonModule, MatCardModule, RouterLink],
   templateUrl: './post-card.html',
   styleUrl: './post-card.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -24,6 +25,9 @@ export class PostCard {
     () => `${this.post().author.firstName} ${this.post().author.lastName}`,
   );
   protected readonly canRemove = computed(() => this.currentUserId() === this.post().author.id);
+  protected readonly authorProfileLink = computed(() =>
+    this.canRemove() ? ['/profile'] : ['/users', this.post().author.id],
+  );
 
   protected toggleLike(): void {
     this.likeToggled.emit(this.post());
