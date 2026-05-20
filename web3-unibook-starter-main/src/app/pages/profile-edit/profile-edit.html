@@ -5,5 +5,73 @@
     <a mat-button routerLink="/profile" class="profile-action">Torna al profilo</a>
   </header>
 
-  <p class="placeholder">Qui inseriremo il form per aggiornare bio e foto profilo.</p>
+  @if (currentUser(); as user) {
+  <form class="profile-form" [formRoot]="form">
+    <div class="avatar-section">
+      <div class="avatar-preview" aria-hidden="true">
+        @if (avatarPreviewUrl()) {
+        <img [src]="avatarPreviewUrl()" alt="" />
+        } @else {
+        <span>{{ user.firstName.charAt(0) }}{{ user.lastName.charAt(0) }}</span>
+        }
+      </div>
+
+      <label class="file-field">
+        <span>Foto profilo</span>
+        <input #avatarInput type="file" accept="image/*" (change)="onAvatarSelected($event)" />
+      </label>
+    </div>
+
+    @if (selectedAvatar(); as avatar) {
+    <p class="selected-file">{{ avatar.name }}</p>
+    }
+
+    @if (fileError()) {
+    <div class="field-errors">
+      <p class="inline-error" role="alert">{{ fileError() }}</p>
+    </div>
+    }
+
+    <label class="text-field">
+      <span>Bio</span>
+      <textarea
+        matInput
+        rows="6"
+        [formField]="form.bio"
+        [class.is-invalid]="form.bio().touched() && form.bio().invalid()"
+        [attr.aria-invalid]="form.bio().touched() && form.bio().invalid() ? 'true' : null"
+      ></textarea>
+    </label>
+
+    <p class="counter" aria-live="polite">{{ model().bio.length }}/300</p>
+
+    @if (form.bio().touched() && form.bio().invalid()) {
+    <div class="field-errors">
+      @for (error of form.bio().errors(); track error) {
+      <p class="inline-error" role="alert">
+        {{ error.message ?? 'Inserisci una bio valida.' }}
+      </p>
+      }
+    </div>
+    }
+
+    @if (form().errors().length) {
+    <div class="field-errors">
+      @for (error of form().errors(); track error) {
+      <p class="inline-error" role="alert">
+        {{ error.message ?? 'Aggiornamento profilo non riuscito.' }}
+      </p>
+      }
+    </div>
+    }
+
+    @if (savedMessage()) {
+    <p class="success-message" role="status">{{ savedMessage() }}</p>
+    }
+
+    <button mat-flat-button type="submit" class="save-button" [disabled]="form().submitting() || uploading()">
+      {{ form().submitting() || uploading() ? 'Salvataggio...' : 'Salva modifiche' }}
+    </button>
+  </form>
+  }
 </section>
