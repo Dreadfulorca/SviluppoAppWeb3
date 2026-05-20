@@ -28,18 +28,23 @@
     <button
       mat-button
       type="button"
+      class="post-action"
       (click)="toggleLike()"
       [disabled]="busy()"
       [attr.aria-pressed]="post().isLiked"
     >
-      <mat-icon aria-hidden="true">{{ post().isLiked ? 'favorite' : 'favorite_border' }}</mat-icon>
-      <span>{{ post().isLiked ? 'Non mi piace più' : 'Mi piace' }}</span>
+      {{ post().isLiked ? 'Non mi piace più' : 'Mi piace' }}
     </button>
 
     @if (canRemove()) {
-    <button mat-button type="button" class="danger-action" (click)="removePost()" [disabled]="busy()">
-      <mat-icon aria-hidden="true">delete</mat-icon>
-      <span>Elimina</span>
+    <button
+      mat-button
+      type="button"
+      class="post-action danger-action"
+      (click)="removePost()"
+      [disabled]="busy()"
+    >
+      Elimina
     </button>
     }
   </mat-card-actions>

@@ -40,6 +40,14 @@
   font-weight: 700;
 }
 
+.post-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 7.5rem;
+  text-align: center;
+}
+
 .danger-action {
   color: #b91c1c;
 }

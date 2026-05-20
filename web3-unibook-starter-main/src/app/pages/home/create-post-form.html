@@ -50,8 +50,12 @@
   </div>
   }
 
-  <button mat-flat-button type="submit" [disabled]="form().submitting() || uploading()">
-    <mat-icon aria-hidden="true">send</mat-icon>
-    <span>{{ form().submitting() || uploading() ? 'Pubblicazione...' : 'Pubblica' }}</span>
+  <button
+    mat-flat-button
+    type="submit"
+    class="submit-button"
+    [disabled]="form().submitting() || uploading()"
+  >
+    {{ form().submitting() || uploading() ? 'Pubblicazione...' : 'Pubblica' }}
   </button>
 </form>

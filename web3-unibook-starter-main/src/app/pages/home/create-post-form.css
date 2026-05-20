@@ -63,6 +63,11 @@ input[type='file'] {
   font-weight: 700;
 }
 
-button {
+.submit-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   justify-self: start;
+  min-width: 7.5rem;
+  text-align: center;
 }

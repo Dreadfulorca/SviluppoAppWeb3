@@ -3,10 +3,7 @@
   <header class="page-header">
     <p class="eyebrow">Profilo personale</p>
     <h1 id="profile-heading">{{ user.firstName }} {{ user.lastName }}</h1>
-    <a mat-flat-button routerLink="/profile/edit">
-      <mat-icon aria-hidden="true">edit</mat-icon>
-      <span>Modifica profilo</span>
-    </a>
+    <a mat-flat-button routerLink="/profile/edit" class="profile-action">Modifica profilo</a>
   </header>
 
   <dl class="profile-grid">
