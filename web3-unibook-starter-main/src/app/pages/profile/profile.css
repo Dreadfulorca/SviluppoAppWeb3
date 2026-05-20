@@ -8,10 +8,29 @@
 }
 
 .page-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
   gap: 1rem;
+}
+
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 6rem;
+  height: 6rem;
+  overflow: hidden;
+  border-radius: 50%;
+  background: #ccfbf1;
+  color: #115e59;
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .eyebrow {
@@ -22,10 +41,20 @@
   text-transform: uppercase;
 }
 
-h1 {
+h1,
+h2,
+.status-box {
   margin: 0;
+}
+
+h1 {
   color: #0f172a;
   font-size: 2rem;
+}
+
+h2 {
+  color: #0f172a;
+  font-size: 1.25rem;
 }
 
 .profile-action {
@@ -66,13 +95,49 @@ dd {
   font-weight: 700;
 }
 
+.posts-section,
+.posts-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.status-box {
+  padding: 1rem 1.1rem;
+  border-radius: 0.75rem;
+  background: #f8fafc;
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  color: #475569;
+}
+
+.status-box--error {
+  background: #fef2f2;
+  border-color: rgba(239, 68, 68, 0.22);
+  color: #991b1b;
+}
+
+.status-box p {
+  margin: 0;
+}
+
 @media (max-width: 720px) {
   .page-header,
   .profile-grid {
     grid-template-columns: 1fr;
   }
 
-  .page-header {
+  .section-header {
     flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .profile-action {
+    width: 100%;
   }
 }

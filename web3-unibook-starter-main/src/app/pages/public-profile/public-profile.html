@@ -1,8 +1,77 @@
 <section class="page-shell" aria-labelledby="public-profile-heading">
-  <header>
-    <p class="eyebrow">Profilo pubblico</p>
-    <h1 id="public-profile-heading">Utente {{ userId }}</h1>
+  @if (loading()) {
+  <p class="status-box" role="status">Caricamento profilo...</p>
+  }
+
+  @if (error()) {
+  <div class="status-box status-box--error" role="alert">
+    <p>{{ error() }}</p>
+  </div>
+  }
+
+  @if (profile(); as user) {
+  <header class="profile-header">
+    <div class="avatar" aria-hidden="true">
+      @if (user.avatarUrl) {
+      <img [src]="user.avatarUrl" alt="" />
+      } @else {
+      <span>{{ user.firstName.charAt(0) }}{{ user.lastName.charAt(0) }}</span>
+      }
+    </div>
+
+    <div class="profile-main">
+      <p class="eyebrow">Profilo pubblico</p>
+      <h1 id="public-profile-heading">{{ user.firstName }} {{ user.lastName }}</h1>
+
+      @if (user.bio) {
+      <p class="bio">{{ user.bio }}</p>
+      } @else {
+      <p class="bio bio--empty">Nessuna bio inserita.</p>
+      }
+    </div>
+
+    @if (!isOwnProfile()) {
+    <button mat-flat-button type="button" class="follow-button" (click)="toggleFollow()" [disabled]="followLoading()">
+      {{ followLoading() ? 'Aggiornamento...' : user.isFollowing ? 'Non seguire più' : 'Segui' }}
+    </button>
+    }
   </header>
 
-  <p class="placeholder">Qui caricheremo dati pubblici, follow/unfollow e post pubblicati.</p>
+  <dl class="stats-grid">
+    <div>
+      <dt>Follower</dt>
+      <dd>{{ user.followersCount }}</dd>
+    </div>
+    <div>
+      <dt>Seguiti</dt>
+      <dd>{{ user.followingCount }}</dd>
+    </div>
+  </dl>
+
+  @if (actionError()) {
+  <div class="status-box status-box--error" role="alert">
+    <p>{{ actionError() }}</p>
+  </div>
+  }
+
+  <section class="posts-section" aria-labelledby="public-profile-posts-heading">
+    <h2 id="public-profile-posts-heading">Post pubblicati</h2>
+
+    @if (postsEmpty()) {
+    <p class="status-box" role="status">Questo utente non ha ancora pubblicato post.</p>
+    } @else if (posts().length) {
+    <div class="posts-list">
+      @for (post of posts(); track post.id) {
+      <app-post-card
+        [post]="post"
+        [currentUserId]="currentUser()?.id ?? null"
+        [busy]="actionPostId() === post.id"
+        (likeToggled)="togglePostLike($event)"
+        (postRemoved)="removePost($event)"
+      />
+      }
+    </div>
+    }
+  </section>
+  }
 </section>

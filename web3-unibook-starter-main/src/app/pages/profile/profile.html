@@ -1,8 +1,19 @@
 <section class="page-shell" aria-labelledby="profile-heading">
   @if (currentUser(); as user) {
   <header class="page-header">
-    <p class="eyebrow">Profilo personale</p>
-    <h1 id="profile-heading">{{ user.firstName }} {{ user.lastName }}</h1>
+    <div class="avatar" aria-hidden="true">
+      @if (user.avatarUrl) {
+      <img [src]="user.avatarUrl" alt="" />
+      } @else {
+      <span>{{ user.firstName.charAt(0) }}{{ user.lastName.charAt(0) }}</span>
+      }
+    </div>
+
+    <div class="profile-main">
+      <p class="eyebrow">Profilo personale</p>
+      <h1 id="profile-heading">{{ user.firstName }} {{ user.lastName }}</h1>
+    </div>
+
     <a mat-flat-button routerLink="/profile/edit" class="profile-action">Modifica profilo</a>
   </header>
 
@@ -28,5 +39,44 @@
       <dd>{{ user.bio || 'Nessuna bio inserita.' }}</dd>
     </div>
   </dl>
+
+  <section class="posts-section" aria-labelledby="profile-posts-heading">
+    <div class="section-header">
+      <h2 id="profile-posts-heading">I tuoi post</h2>
+      <button mat-button type="button" class="profile-action" (click)="reloadPosts()" [disabled]="loadingPosts()">
+        Aggiorna
+      </button>
+    </div>
+
+    @if (postsError()) {
+    <div class="status-box status-box--error" role="alert">
+      <p>{{ postsError() }}</p>
+    </div>
+    }
+
+    @if (actionError()) {
+    <div class="status-box status-box--error" role="alert">
+      <p>{{ actionError() }}</p>
+    </div>
+    }
+
+    @if (loadingPosts() && !posts().length) {
+    <p class="status-box" role="status">Caricamento post...</p>
+    } @else if (postsEmpty()) {
+    <p class="status-box" role="status">Non hai ancora pubblicato post.</p>
+    } @else if (posts().length) {
+    <div class="posts-list">
+      @for (post of posts(); track post.id) {
+      <app-post-card
+        [post]="post"
+        [currentUserId]="user.id"
+        [busy]="actionPostId() === post.id"
+        (likeToggled)="togglePostLike($event)"
+        (postRemoved)="removePost($event)"
+      />
+      }
+    </div>
+    }
+  </section>
   }
 </section>
