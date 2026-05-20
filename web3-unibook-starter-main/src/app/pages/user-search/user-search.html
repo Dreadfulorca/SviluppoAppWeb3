@@ -4,5 +4,67 @@
     <h1 id="user-search-heading">Cerca utenti</h1>
   </header>
 
-  <p class="placeholder">Qui inseriremo la ricerca per nome o cognome.</p>
+  <form class="search-form" [formRoot]="form">
+    <label class="search-field">
+      <span>Nome o cognome</span>
+      <input
+        matInput
+        type="search"
+        [formField]="form.query"
+        autocomplete="off"
+        [class.is-invalid]="form.query().touched() && form.query().invalid()"
+        [attr.aria-invalid]="form.query().touched() && form.query().invalid() ? 'true' : null"
+      />
+    </label>
+
+    <button mat-flat-button type="submit" class="search-button" [disabled]="form().submitting() || loading()">
+      {{ form().submitting() || loading() ? 'Ricerca...' : 'Cerca' }}
+    </button>
+
+    @if (form.query().touched() && form.query().invalid()) {
+    <div class="field-errors">
+      @for (error of form.query().errors(); track error) {
+      <p class="inline-error" role="alert">
+        {{ error.message ?? 'Inserisci nome o cognome da cercare.' }}
+      </p>
+      }
+    </div>
+    }
+
+    @if (form().errors().length) {
+    <div class="field-errors">
+      @for (error of form().errors(); track error) {
+      <p class="inline-error" role="alert">
+        {{ error.message ?? 'Ricerca utenti non riuscita.' }}
+      </p>
+      }
+    </div>
+    }
+  </form>
+
+  @if (loading()) {
+  <p class="status-box" role="status">Ricerca in corso...</p>
+  } @else if (isEmpty()) {
+  <p class="status-box" role="status">Nessun utente trovato.</p>
+  } @else if (results().length) {
+  <div class="results-list" aria-label="Risultati ricerca utenti">
+    @for (user of results(); track user.id) {
+    <article class="user-card">
+      <div class="avatar" aria-hidden="true">
+        @if (user.avatarUrl) {
+        <img [src]="user.avatarUrl" alt="" />
+        } @else {
+        <span>{{ user.firstName.charAt(0) }}{{ user.lastName.charAt(0) }}</span>
+        }
+      </div>
+
+      <div>
+        <h2>{{ user.firstName }} {{ user.lastName }}</h2>
+      </div>
+
+      <a mat-button [routerLink]="['/users', user.id]" class="profile-link">Vedi profilo</a>
+    </article>
+    }
+  </div>
+  }
 </section>
