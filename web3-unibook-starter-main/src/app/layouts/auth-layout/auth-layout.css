@@ -17,21 +17,19 @@
 .brand {
   display: inline-flex;
   align-items: center;
+  gap: 0.55rem;
   min-height: 2.75rem;
   color: var(--app-text);
   text-decoration: none;
-  font-size: 1.25rem;
+  font-size: 1.55rem;
   font-weight: 900;
 }
 
-.brand::before {
-  content: "";
-  width: 0.75rem;
-  height: 0.75rem;
-  margin-right: 0.55rem;
-  border-radius: 50%;
-  background: var(--app-primary);
-  box-shadow: 0 0 0 0.28rem rgba(37, 99, 235, 0.12);
+.brand-logo {
+  width: 2.35rem;
+  height: 2.35rem;
+  flex: 0 0 auto;
+  object-fit: contain;
 }
 
 .auth-main {
