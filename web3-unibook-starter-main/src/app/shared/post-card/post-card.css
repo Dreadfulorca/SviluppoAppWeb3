@@ -87,6 +87,8 @@
 }
 
 .danger-action {
+  --mdc-text-button-label-text-color: var(--app-danger);
+  --mat-text-button-state-layer-color: var(--app-danger);
   color: var(--app-danger);
   font-weight: 750;
 }

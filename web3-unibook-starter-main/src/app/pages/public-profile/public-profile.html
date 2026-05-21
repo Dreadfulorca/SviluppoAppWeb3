@@ -32,7 +32,7 @@
 
     @if (!isOwnProfile()) {
     <button mat-flat-button type="button" class="follow-button" (click)="toggleFollow()" [disabled]="followLoading()">
-      {{ followLoading() ? 'Aggiornamento...' : user.isFollowing ? 'Non seguire piu' : 'Segui' }}
+      {{ followLoading() ? 'Aggiornamento...' : user.isFollowing ? 'Non seguire più' : 'Segui' }}
     </button>
     }
   </header>

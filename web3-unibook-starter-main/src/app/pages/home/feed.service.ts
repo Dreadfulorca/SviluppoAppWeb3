@@ -4,6 +4,7 @@ import { catchError, finalize } from 'rxjs/operators';
 
 import { FeedApiService } from '../../core/api/feed-api.service';
 import { Post } from '../../core/api/models/post.types';
+import { sortPostsByNewest } from '../../core/api/models/post.utils';
 import { PostsApiService } from '../../core/api/posts-api.service';
 import { extractHttpErrorMessage } from '../../core/http/extract-http-error-message';
 
@@ -42,7 +43,7 @@ export class FeedService {
         }),
       )
       .subscribe((posts) => {
-        this.postsState.set(this.sortPostsByNewest(posts));
+        this.postsState.set(sortPostsByNewest(posts));
       });
   }
 
@@ -115,12 +116,5 @@ export class FeedService {
       .subscribe(() => {
         this.postsState.update((posts) => posts.filter((post) => post.id !== postId));
       });
-  }
-
-  private sortPostsByNewest(posts: Post[]): Post[] {
-    return [...posts].sort(
-      (firstPost, secondPost) =>
-        new Date(secondPost.createdAt).getTime() - new Date(firstPost.createdAt).getTime(),
-    );
   }
 }

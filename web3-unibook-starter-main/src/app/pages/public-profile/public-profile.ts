@@ -13,6 +13,7 @@ import { ActivatedRoute } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 
 import { Post } from '../../core/api/models/post.types';
+import { sortPostsByNewest } from '../../core/api/models/post.utils';
 import { UserPublic } from '../../core/api/models/user.types';
 import { PostsApiService } from '../../core/api/posts-api.service';
 import { UsersApiService } from '../../core/api/users-api.service';
@@ -170,19 +171,12 @@ export class PublicProfile implements OnInit {
       ]);
 
       this.profile.set(profile);
-      this.posts.set(this.sortPostsByNewest(posts));
+      this.posts.set(sortPostsByNewest(posts));
     } catch (error: unknown) {
       this.error.set(extractHttpErrorMessage(error, 'Impossibile caricare il profilo.'));
     } finally {
       this.loading.set(false);
     }
-  }
-
-  private sortPostsByNewest(posts: Post[]): Post[] {
-    return [...posts].sort(
-      (firstPost, secondPost) =>
-        new Date(secondPost.createdAt).getTime() - new Date(firstPost.createdAt).getTime(),
-    );
   }
 
   private updateCurrentUserFollowingCount(wasFollowing: boolean): void {
