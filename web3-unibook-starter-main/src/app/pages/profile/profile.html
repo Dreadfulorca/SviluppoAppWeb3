@@ -63,7 +63,13 @@
     @if (loadingPosts() && !posts().length) {
     <p class="status-box" role="status">Caricamento post...</p>
     } @else if (postsEmpty()) {
-    <p class="status-box" role="status">Non hai ancora pubblicato post.</p>
+    <div class="empty-state" role="status">
+      <div>
+        <h3>Non hai ancora pubblicato post</h3>
+        <p>Condividi un aggiornamento, un pensiero o un'immagine con la tua rete.</p>
+      </div>
+      <a routerLink="/posts/new" class="button-secondary">Pubblica il primo post</a>
+    </div>
     } @else if (posts().length) {
     <div class="posts-list">
       @for (post of posts(); track post.id) {

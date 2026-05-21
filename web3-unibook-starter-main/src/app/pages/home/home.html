@@ -34,7 +34,13 @@
     @if (isFeedLoading() && !feedPosts().length) {
     <p class="status-box" role="status">Caricamento feed...</p>
     } @else if (isFeedEmpty()) {
-    <p class="status-box" role="status">Il feed è vuoto. Segui qualcuno o pubblica il tuo primo post.</p>
+    <div class="empty-state" role="status">
+      <div>
+        <h2>Il feed è vuoto</h2>
+        <p>Segui qualcuno o pubblica un post per iniziare a riempire la tua home.</p>
+      </div>
+      <a routerLink="/posts/new" class="button-secondary">Pubblica il primo post</a>
+    </div>
     } @else if (feedPosts().length) {
     <div class="feed-list">
       @for (post of feedPosts(); track post.id) {

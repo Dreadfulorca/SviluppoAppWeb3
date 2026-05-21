@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 import { Post } from '../../core/api/models/post.types';
 import { AuthService } from '../../core/auth/auth.service';
@@ -7,7 +8,7 @@ import { FeedService } from './feed.service';
 
 @Component({
   selector: 'app-home',
-  imports: [PostCard],
+  imports: [PostCard, RouterLink],
   templateUrl: './home.html',
   styleUrl: './home.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
