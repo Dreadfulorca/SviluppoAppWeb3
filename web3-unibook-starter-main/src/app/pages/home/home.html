@@ -1,39 +1,9 @@
 <section class="home-page">
   @if (currentUser(); as user) {
-  <header class="panel panel--full">
-    <p class="eyebrow">Home</p>
-    <h1>Ciao, {{ user.firstName }}</h1>
-    <p class="copy">
-      Qui trovi la sessione attiva e il feed personale con i tuoi post e delle persone che segui.
-    </p>
-  </header>
-
   <div class="grid">
     <article class="panel">
       <h2>Pubblica un post</h2>
       <app-create-post-form (postCreated)="onPostCreated($event)" />
-    </article>
-
-    <article class="panel">
-      <h2>Sessione attiva</h2>
-      <dl>
-        <div>
-          <dt>Nome</dt>
-          <dd>{{ user.firstName }} {{ user.lastName }}</dd>
-        </div>
-        <div>
-          <dt>Email</dt>
-          <dd>{{ user.email }}</dd>
-        </div>
-        <div>
-          <dt>Data di nascita</dt>
-          <dd>{{ user.birthDate }}</dd>
-        </div>
-        <div>
-          <dt>ID utente</dt>
-          <dd>{{ user.id }}</dd>
-        </div>
-      </dl>
     </article>
 
     <section class="panel panel--full" aria-labelledby="feed-heading" [attr.aria-busy]="isFeedLoading()">
