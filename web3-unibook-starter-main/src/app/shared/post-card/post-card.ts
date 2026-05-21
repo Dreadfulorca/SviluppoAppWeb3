@@ -35,6 +35,12 @@ export class PostCard {
   }
 
   protected removePost(): void {
+    const confirmed = window.confirm('Vuoi eliminare definitivamente questo post?');
+
+    if (!confirmed) {
+      return;
+    }
+
     this.postRemoved.emit(this.post().id);
   }
 }
