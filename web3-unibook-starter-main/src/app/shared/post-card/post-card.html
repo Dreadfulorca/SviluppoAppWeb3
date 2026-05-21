@@ -28,15 +28,17 @@
     </span>
 
     <button
-      mat-button
+      mat-icon-button
       type="button"
-      class="post-action"
+      class="post-action like-action"
       (click)="toggleLike()"
       [disabled]="busy()"
       [attr.aria-label]="post().isLiked ? 'Togli mi piace' : 'Metti mi piace'"
       [attr.aria-pressed]="post().isLiked"
     >
-      <span class="like-icon" aria-hidden="true">{{ post().isLiked ? '♥' : '♡' }}</span>
+      <mat-icon class="like-icon" aria-hidden="true">
+        {{ post().isLiked ? 'favorite' : 'favorite_border' }}
+      </mat-icon>
     </button>
 
     @if (canRemove()) {

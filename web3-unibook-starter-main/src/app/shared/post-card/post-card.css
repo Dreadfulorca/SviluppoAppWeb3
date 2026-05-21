@@ -65,10 +65,15 @@
   text-align: center;
 }
 
-.like-icon {
+.like-action {
   color: #dc2626;
-  font-size: 1.55rem;
-  line-height: 1;
+}
+
+.like-icon {
+  font-size: 1.6rem;
+  height: 1.6rem;
+  line-height: 1.6rem;
+  width: 1.6rem;
 }
 
 .danger-action {
