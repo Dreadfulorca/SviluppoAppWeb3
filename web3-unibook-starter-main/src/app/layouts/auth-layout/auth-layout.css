@@ -5,31 +5,43 @@
 
 .auth-shell {
   min-height: 100dvh;
-  padding: 1.5rem;
+  padding: 1rem 1.25rem 2rem;
 }
 
 .auth-header {
-  width: min(72rem, 100%);
+  width: min(70rem, 100%);
   margin: 0 auto;
-  padding: 1rem 0;
+  padding: 0.75rem 0;
 }
 
 .brand {
-  color: #0f172a;
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  color: var(--app-text);
   text-decoration: none;
-  font-size: 1.1rem;
-  font-weight: 800;
-  letter-spacing: 0.02em;
+  font-size: 1.25rem;
+  font-weight: 900;
+}
+
+.brand::before {
+  content: "";
+  width: 0.75rem;
+  height: 0.75rem;
+  margin-right: 0.55rem;
+  border-radius: 50%;
+  background: var(--app-primary);
+  box-shadow: 0 0 0 0.28rem rgba(37, 99, 235, 0.12);
 }
 
 .auth-main {
-  width: min(72rem, 100%);
+  width: min(70rem, 100%);
   margin: 0 auto;
   padding: 1rem 0 3rem;
 }
 
 @media (max-width: 720px) {
   .auth-shell {
-    padding: 1rem;
+    padding: 0.75rem;
   }
 }

@@ -1,15 +1,22 @@
 .post-card {
-  border-radius: 0.75rem;
-  background: #ffffff;
+  overflow: hidden;
+  border: 1px solid var(--app-border);
+  border-radius: 1.25rem;
+  background: var(--app-surface);
+  box-shadow: 0 14px 35px rgba(15, 23, 42, 0.07);
+}
+
+.post-card:hover {
+  border-color: var(--app-border-strong);
 }
 
 .avatar {
   display: grid;
   place-items: center;
   overflow: hidden;
-  background: #ccfbf1;
-  color: #115e59;
-  font-weight: 800;
+  background: linear-gradient(135deg, #dbeafe, #ccfbf1);
+  color: #1d4ed8;
+  font-weight: 900;
 }
 
 .avatar img {
@@ -19,42 +26,45 @@
 }
 
 .author-link {
-  color: inherit;
+  color: var(--app-text);
   text-decoration: none;
+  font-weight: 850;
 }
 
 .author-link:hover,
 .author-link:focus-visible {
-  color: #0f766e;
+  color: var(--app-primary);
   text-decoration: underline;
   text-underline-offset: 0.18em;
 }
 
 .author-link:focus-visible {
-  outline: 3px solid rgba(20, 184, 166, 0.35);
+  outline: 3px solid rgba(37, 99, 235, 0.22);
   border-radius: 0.25rem;
 }
 
 .post-text {
   margin: 1rem 0 0;
-  color: #1e293b;
-  line-height: 1.6;
+  color: #1f2937;
+  font-size: 1rem;
+  line-height: 1.65;
   white-space: pre-wrap;
 }
 
 .post-image {
   display: block;
   width: 100%;
-  max-height: 24rem;
+  max-height: 30rem;
   margin-top: 1rem;
-  border-radius: 0.75rem;
+  border-radius: 1rem;
   object-fit: cover;
+  background: #e5e7eb;
 }
 
 .likes-count {
   margin-right: auto;
-  color: #334155;
-  font-weight: 700;
+  color: var(--app-text-muted);
+  font-weight: 800;
 }
 
 .post-action {
@@ -66,27 +76,29 @@
 }
 
 .like-action {
-  color: #dc2626;
+  color: #e11d48;
 }
 
 .like-icon {
-  font-size: 1.6rem;
-  height: 1.6rem;
-  line-height: 1.6rem;
-  width: 1.6rem;
+  font-size: 1.65rem;
+  height: 1.65rem;
+  line-height: 1.65rem;
+  width: 1.65rem;
 }
 
 .danger-action {
-  color: #b91c1c;
+  color: var(--app-danger);
+  font-weight: 750;
 }
 
 @media (max-width: 640px) {
   mat-card-actions {
-    align-items: flex-start;
-    flex-direction: column;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
   }
 
   .likes-count {
-    margin-right: 0;
+    margin-right: auto;
   }
 }
