@@ -95,6 +95,8 @@ export class PublicProfile implements OnInit {
             }
           : currentProfile,
       );
+
+      this.updateCurrentUserFollowingCount(profile.isFollowing);
     } catch (error: unknown) {
       this.actionError.set(
         extractHttpErrorMessage(error, 'Impossibile aggiornare lo stato follow.'),
@@ -181,5 +183,20 @@ export class PublicProfile implements OnInit {
       (firstPost, secondPost) =>
         new Date(secondPost.createdAt).getTime() - new Date(firstPost.createdAt).getTime(),
     );
+  }
+
+  private updateCurrentUserFollowingCount(wasFollowing: boolean): void {
+    const currentUser = this.currentUser();
+
+    if (!currentUser) {
+      return;
+    }
+
+    this.authService.updateCurrentUser({
+      ...currentUser,
+      followingCount: wasFollowing
+        ? Math.max(0, currentUser.followingCount - 1)
+        : currentUser.followingCount + 1,
+    });
   }
 }
