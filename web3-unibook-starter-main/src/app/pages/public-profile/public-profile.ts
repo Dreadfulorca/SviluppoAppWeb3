@@ -168,11 +168,18 @@ export class PublicProfile implements OnInit {
       ]);
 
       this.profile.set(profile);
-      this.posts.set(posts);
+      this.posts.set(this.sortPostsByNewest(posts));
     } catch (error: unknown) {
       this.error.set(extractHttpErrorMessage(error, 'Impossibile caricare il profilo.'));
     } finally {
       this.loading.set(false);
     }
+  }
+
+  private sortPostsByNewest(posts: Post[]): Post[] {
+    return [...posts].sort(
+      (firstPost, secondPost) =>
+        new Date(secondPost.createdAt).getTime() - new Date(firstPost.createdAt).getTime(),
+    );
   }
 }

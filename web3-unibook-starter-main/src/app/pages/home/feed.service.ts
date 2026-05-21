@@ -42,7 +42,7 @@ export class FeedService {
         }),
       )
       .subscribe((posts) => {
-        this.postsState.set(posts);
+        this.postsState.set(this.sortPostsByNewest(posts));
       });
   }
 
@@ -115,5 +115,12 @@ export class FeedService {
       .subscribe(() => {
         this.postsState.update((posts) => posts.filter((post) => post.id !== postId));
       });
+  }
+
+  private sortPostsByNewest(posts: Post[]): Post[] {
+    return [...posts].sort(
+      (firstPost, secondPost) =>
+        new Date(secondPost.createdAt).getTime() - new Date(firstPost.createdAt).getTime(),
+    );
   }
 }
