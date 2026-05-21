@@ -9,9 +9,6 @@
 }
 
 .app-header {
-  position: sticky;
-  top: 1rem;
-  z-index: 10;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -128,7 +125,6 @@
   }
 
   .app-header {
-    position: static;
     align-items: flex-start;
     flex-direction: column;
   }
