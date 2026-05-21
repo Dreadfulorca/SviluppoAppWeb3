@@ -57,6 +57,26 @@
   color: white;
 }
 
+.create-link {
+  --mdc-filled-button-container-color: #0f766e;
+  --mdc-filled-button-label-text-color: #ffffff;
+  width: 2.75rem;
+  min-width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  border-radius: 50%;
+  color: #ffffff;
+  font-size: 1.45rem;
+  font-weight: 800;
+  line-height: 1;
+  text-align: center;
+  text-decoration: none;
+}
+
+.create-link--active {
+  --mdc-filled-button-container-color: #115e59;
+}
+
 .nav-link,
 .logout-button {
   display: inline-flex;

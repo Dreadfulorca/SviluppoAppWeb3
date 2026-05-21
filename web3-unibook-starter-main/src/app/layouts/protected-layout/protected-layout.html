@@ -1,6 +1,6 @@
 <div class="app-shell">
   <mat-toolbar class="app-header">
-    <a class="brand" routerLink="/home" aria-label="Vai alla home">UniBook</a>
+    <a class="brand" routerLink="/home" aria-label="Vai alla home">Looply</a>
 
     <nav class="app-nav" aria-label="Navigazione principale">
       <a mat-button routerLink="/home" routerLinkActive="nav-link--active" class="nav-link">
@@ -11,6 +11,15 @@
       </a>
       <a mat-button routerLink="/users/search" routerLinkActive="nav-link--active" class="nav-link">
         Cerca
+      </a>
+      <a
+        mat-flat-button
+        routerLink="/posts/new"
+        routerLinkActive="create-link--active"
+        class="create-link"
+        aria-label="Pubblica un nuovo post"
+      >
+        +
       </a>
       @if (currentUser(); as user) {
       <p class="user-chip">{{ user.firstName }} {{ user.lastName }}</p>

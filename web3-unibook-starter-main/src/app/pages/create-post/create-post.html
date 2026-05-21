@@ -1,0 +1,12 @@
+<section class="page-shell" aria-labelledby="create-post-heading">
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">Nuovo post</p>
+      <h1 id="create-post-heading">Pubblica un post</h1>
+    </div>
+
+    <a mat-button routerLink="/home" class="home-link">Torna alla home</a>
+  </header>
+
+  <app-create-post-form (postCreated)="onPostCreated()" />
+</section>

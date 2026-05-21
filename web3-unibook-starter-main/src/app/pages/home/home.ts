@@ -3,12 +3,11 @@ import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/cor
 import { Post } from '../../core/api/models/post.types';
 import { AuthService } from '../../core/auth/auth.service';
 import { PostCard } from '../../shared/post-card/post-card';
-import { CreatePostForm } from './create-post-form';
 import { FeedService } from './feed.service';
 
 @Component({
   selector: 'app-home',
-  imports: [CreatePostForm, PostCard],
+  imports: [PostCard],
   templateUrl: './home.html',
   styleUrl: './home.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -31,10 +30,6 @@ export class Home implements OnInit {
 
   protected reloadFeed(): void {
     this.feedService.loadFeed();
-  }
-
-  protected onPostCreated(post: Post): void {
-    this.feedService.addPost(post);
   }
 
   protected togglePostLike(post: Post): void {

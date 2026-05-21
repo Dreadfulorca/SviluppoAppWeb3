@@ -1,11 +1,6 @@
 <section class="home-page">
   @if (currentUser(); as user) {
   <div class="grid">
-    <article class="panel">
-      <h2>Pubblica un post</h2>
-      <app-create-post-form (postCreated)="onPostCreated($event)" />
-    </article>
-
     <section class="panel panel--full" aria-labelledby="feed-heading" [attr.aria-busy]="isFeedLoading()">
       <div class="panel-header">
         <div>
