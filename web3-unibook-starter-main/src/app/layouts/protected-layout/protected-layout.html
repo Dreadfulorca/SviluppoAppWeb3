@@ -3,16 +3,15 @@
     <a class="brand" routerLink="/home" aria-label="Vai alla home">Looply</a>
 
     <nav class="app-nav" aria-label="Navigazione principale">
+
       <a mat-button routerLink="/home" routerLinkActive="nav-link--active" class="nav-link">
         Home
       </a>
+      
       <a mat-button routerLink="/profile" routerLinkActive="nav-link--active" class="nav-link">
         Profilo
       </a>
-      <a mat-button routerLink="/users/search" routerLinkActive="nav-link--active" class="nav-link">
-        Cerca
-      </a>
-      <a
+            <a
         mat-flat-button
         routerLink="/posts/new"
         routerLinkActive="create-link--active"
@@ -20,6 +19,9 @@
         aria-label="Pubblica un nuovo post"
       >
         +
+      </a>
+      <a mat-button routerLink="/users/search" routerLinkActive="nav-link--active" class="nav-link">
+        Cerca
       </a>
       @if (currentUser(); as user) {
       <p class="user-chip">{{ user.firstName }} {{ user.lastName }}</p>
