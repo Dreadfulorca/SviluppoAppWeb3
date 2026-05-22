@@ -8,18 +8,9 @@
   gap: 1rem;
 }
 
-.eyebrow {
-  margin: 0 0 0.35rem;
-  color: var(--app-primary);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  font-size: 0.74rem;
-  font-weight: 900;
-}
-
 h1 {
   margin: 0;
-  color: var(--app-text);
+  color: #340545;
   font-size: clamp(1.65rem, 4vw, 2.35rem);
   line-height: 1.05;
 }
@@ -45,15 +36,15 @@ h2 {
   padding: 0.72rem 1rem;
   font: inherit;
   font-weight: 800;
-  color: #1d4ed8;
+  color: #c2410c;
   background: #ffffff;
   cursor: pointer;
   box-shadow: 0 8px 18px rgba(15, 23, 42, 0.05);
 }
 
 .button-secondary:hover {
-  border-color: rgba(37, 99, 235, 0.32);
-  background: #eff6ff;
+  border-color: rgba(249, 115, 22, 0.32);
+  background: rgba(255, 181, 118, 0.22);
 }
 
 .button-secondary:disabled {
@@ -63,7 +54,7 @@ h2 {
 
 .status-inline {
   margin: 0;
-  color: var(--app-primary);
+  color: #6d28d9;
   font-weight: 800;
 }
 

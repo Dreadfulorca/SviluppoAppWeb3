@@ -7,7 +7,12 @@
   font-weight: 400;
   color: #111827;
   background:
-    linear-gradient(180deg, rgba(37, 99, 235, 0.08) 0%, rgba(255, 255, 255, 0) 18rem),
+    linear-gradient(
+      180deg,
+      rgba(136, 50, 217, 0.45) 0%,
+      rgba(114, 40, 180, 0.32) 45%,
+      rgba(255, 181, 118, 0.18) 100%
+    ),
     #f4f6fb;
   --app-surface: #ffffff;
   --app-surface-muted: #f8fafc;

@@ -2,10 +2,7 @@
   @if (currentUser(); as user) {
   <section class="feed-panel" aria-labelledby="feed-heading" [attr.aria-busy]="isFeedLoading()">
     <div class="panel-header">
-      <div>
-        <p class="eyebrow">Feed</p>
-        <h1 id="feed-heading">Aggiornamenti recenti</h1>
-      </div>
+      <h1 id="feed-heading">Feed</h1>
 
       <button type="button" class="button-secondary" (click)="reloadFeed()" [disabled]="isFeedLoading()">
         Aggiorna

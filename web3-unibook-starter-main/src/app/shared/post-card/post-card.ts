@@ -17,7 +17,7 @@ import { Post } from '../../core/api/models/post.types';
       <p>Questa azione è definitiva e non può essere annullata.</p>
     </mat-dialog-content>
     <mat-dialog-actions align="end">
-      <button mat-button type="button" (click)="cancel()">Annulla</button>
+      <button mat-button type="button" class="cancel-button" (click)="cancel()">Annulla</button>
       <button mat-flat-button color="warn" type="button" class="confirm-button" (click)="confirm()">
         Elimina
       </button>
@@ -40,6 +40,19 @@ import { Post } from '../../core/api/models/post.types';
 
     .confirm-button:hover {
       background-color: #991b1b;
+    }
+
+    .cancel-button {
+      --mat-button-text-label-text-color: #334155;
+      --mat-button-text-state-layer-color: #f97316;
+      color: #334155;
+      font-weight: 750;
+    }
+
+    .cancel-button:hover,
+    .cancel-button:focus-visible {
+      background: rgba(255, 181, 118, 0.26);
+      color: #9a3412;
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,

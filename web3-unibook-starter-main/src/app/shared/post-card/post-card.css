@@ -33,13 +33,14 @@
 
 .author-link:hover,
 .author-link:focus-visible {
-  color: var(--app-primary);
+  color: #6d28d9;
   text-decoration: underline;
+  text-decoration-color: #6d28d9;
   text-underline-offset: 0.18em;
 }
 
 .author-link:focus-visible {
-  outline: 3px solid rgba(37, 99, 235, 0.22);
+  outline: 3px solid rgba(109, 40, 217, 0.22);
   border-radius: 0.25rem;
 }
 
@@ -59,6 +60,10 @@
   border-radius: 1rem;
   object-fit: cover;
   background: #e5e7eb;
+}
+
+mat-card-actions {
+  padding-inline: 1rem;
 }
 
 .likes-count {

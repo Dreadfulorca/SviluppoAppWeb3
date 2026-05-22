@@ -21,7 +21,7 @@
 
 .eyebrow {
   margin: 0 0 0.35rem;
-  color: var(--app-primary);
+  color: #6d28d9;
   font-size: 0.74rem;
   font-weight: 900;
   letter-spacing: 0.12em;
@@ -40,6 +40,9 @@ h1 {
 }
 
 .profile-action {
+  --mat-button-filled-container-color: #ea580c;
+  --mat-button-filled-label-text-color: #ffffff;
+  --mat-button-filled-state-layer-color: #ffffff;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -142,6 +145,9 @@ textarea:focus {
 }
 
 .save-button {
+  --mat-button-filled-container-color: #ea580c;
+  --mat-button-filled-label-text-color: #ffffff;
+  --mat-button-filled-state-layer-color: #ffffff;
   display: inline-flex;
   align-items: center;
   justify-content: center;

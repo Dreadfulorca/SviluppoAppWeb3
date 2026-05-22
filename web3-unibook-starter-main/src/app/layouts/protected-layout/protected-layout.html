@@ -29,7 +29,9 @@
       </a>
 
       @if (currentUser(); as user) {
-      <p class="user-chip">{{ user.firstName }} {{ user.lastName }}</p>
+      <a routerLink="/profile" class="user-chip" aria-label="Vai al tuo profilo">
+        {{ user.firstName }} {{ user.lastName }}
+      </a>
       }
 
       <button mat-flat-button type="button" class="logout-button" (click)="logout()">
