@@ -61,7 +61,7 @@ input {
 }
 
 input:focus {
-  outline: 3px solid rgba(37, 99, 235, 0.2);
+  outline: 3px solid rgba(235, 129, 37, 0.2);
   border-color: var(--app-primary);
 }
 
