@@ -49,6 +49,7 @@
   color: #1f2937;
   font-size: 1rem;
   line-height: 1.65;
+  overflow-wrap: anywhere;
   white-space: pre-wrap;
 }
 
@@ -107,10 +108,20 @@ mat-card-actions {
 }
 
 @media (max-width: 640px) {
+  mat-card-header {
+    min-width: 0;
+  }
+
+  mat-card-title,
+  mat-card-subtitle {
+    overflow-wrap: anywhere;
+  }
+
   mat-card-actions {
     align-items: center;
     flex-direction: row;
     flex-wrap: wrap;
+    gap: 0.25rem;
   }
 
   .likes-count {

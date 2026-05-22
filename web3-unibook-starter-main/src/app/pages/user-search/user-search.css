@@ -153,6 +153,7 @@ input:focus {
 h2 {
   color: var(--app-text);
   font-size: 1.05rem;
+  overflow-wrap: anywhere;
 }
 
 @media (max-width: 720px) {
@@ -164,5 +165,11 @@ h2 {
   .profile-link,
   .search-button {
     width: 100%;
+  }
+
+  header,
+  .search-form,
+  .user-card {
+    padding: 1rem;
   }
 }

@@ -74,3 +74,18 @@ input[type='file'] {
   border-radius: 999px;
   text-align: center;
 }
+
+@media (max-width: 520px) {
+  textarea {
+    min-height: 8rem;
+  }
+
+  .selected-file {
+    align-items: flex-start;
+    overflow-wrap: anywhere;
+  }
+
+  .submit-button {
+    width: 100%;
+  }
+}

@@ -85,6 +85,7 @@ h2 {
   margin-top: 0.75rem;
   color: #334155;
   line-height: 1.6;
+  overflow-wrap: anywhere;
   white-space: pre-wrap;
 }
 
@@ -170,5 +171,9 @@ dd {
 
   .follow-button {
     width: 100%;
+  }
+
+  .profile-header {
+    padding: 1rem;
   }
 }

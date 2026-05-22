@@ -60,4 +60,8 @@ app-create-post-form {
   .home-link {
     width: 100%;
   }
+
+  app-create-post-form {
+    padding: 1rem;
+  }
 }

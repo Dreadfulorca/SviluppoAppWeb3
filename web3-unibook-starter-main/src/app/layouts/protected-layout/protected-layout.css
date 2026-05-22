@@ -163,4 +163,47 @@
     width: 100%;
     text-align: center;
   }
+
+  .app-main {
+    padding: 1.25rem 0 2rem;
+  }
+}
+
+@media (max-width: 520px) {
+  .app-header {
+    gap: 0.75rem;
+    padding: 0.65rem;
+  }
+
+  .brand {
+    min-height: 2.25rem;
+    padding-inline: 0.35rem;
+    font-size: 1.1rem;
+  }
+
+  .brand-logo {
+    width: 3.2rem;
+    height: 3.2rem;
+  }
+
+  .app-nav {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: center;
+  }
+
+  .create-link {
+    justify-self: start;
+  }
+
+  .nav-link,
+  .logout-button {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .user-chip,
+  .logout-button {
+    grid-column: 1 / -1;
+  }
 }

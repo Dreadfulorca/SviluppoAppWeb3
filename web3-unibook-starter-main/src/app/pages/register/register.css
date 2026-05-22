@@ -117,3 +117,18 @@ a {
     grid-template-columns: 1fr;
   }
 }
+
+@media (max-width: 520px) {
+  .auth-page {
+    min-height: auto;
+  }
+
+  .auth-card {
+    padding: 1.35rem;
+    border-radius: 1.1rem;
+  }
+
+  h1 {
+    font-size: 1.9rem;
+  }
+}

@@ -42,4 +42,8 @@
   .auth-shell {
     padding: 0.75rem;
   }
+
+  .auth-main {
+    padding: 0.5rem 0 2rem;
+  }
 }
