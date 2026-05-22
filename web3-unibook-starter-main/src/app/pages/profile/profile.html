@@ -1,13 +1,20 @@
 <section class="page-shell" aria-labelledby="profile-heading">
   @if (currentUser(); as user) {
   <header class="page-header">
+    @if (user.avatarUrl; as avatarUrl) {
+    <button
+      type="button"
+      class="avatar avatar-button"
+      aria-label="Apri la tua foto profilo"
+      (click)="openAvatar(avatarUrl, user.firstName, user.lastName)"
+    >
+      <img [src]="avatarUrl" alt="" />
+    </button>
+    } @else {
     <div class="avatar" aria-hidden="true">
-      @if (user.avatarUrl) {
-      <img [src]="user.avatarUrl" alt="" />
-      } @else {
       <span>{{ user.firstName.charAt(0) }}{{ user.lastName.charAt(0) }}</span>
-      }
     </div>
+    }
 
     <div class="profile-main">
       <p class="eyebrow">Profilo personale</p>

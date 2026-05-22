@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit, computed, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
 import { RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 
@@ -10,6 +11,7 @@ import { UsersApiService } from '../../core/api/users-api.service';
 import { AuthService } from '../../core/auth/auth.service';
 import { extractHttpErrorMessage } from '../../core/http/extract-http-error-message';
 import { PostCard } from '../../shared/post-card/post-card';
+import { ProfileImageDialog } from '../../shared/profile-image-dialog/profile-image-dialog';
 
 @Component({
   selector: 'app-profile',
@@ -20,6 +22,7 @@ import { PostCard } from '../../shared/post-card/post-card';
 })
 export class Profile implements OnInit {
   private readonly authService = inject(AuthService);
+  private readonly dialog = inject(MatDialog);
   private readonly postsApi = inject(PostsApiService);
   private readonly usersApi = inject(UsersApiService);
 
@@ -90,6 +93,21 @@ export class Profile implements OnInit {
     } finally {
       this.actionPostId.set(null);
     }
+  }
+
+  protected openAvatar(imageUrl: string, firstName: string, lastName: string): void {
+    this.dialog.open(ProfileImageDialog, {
+      ariaLabel: 'Foto profilo a schermo intero',
+      autoFocus: 'dialog',
+      data: {
+        alt: `Foto profilo di ${firstName} ${lastName}`,
+        imageUrl,
+      },
+      height: '100dvh',
+      maxWidth: '100vw',
+      restoreFocus: true,
+      width: '100vw',
+    });
   }
 
   private async loadPosts(): Promise<void> {

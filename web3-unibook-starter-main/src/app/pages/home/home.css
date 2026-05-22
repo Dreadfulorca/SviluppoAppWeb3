@@ -44,7 +44,7 @@ h2 {
 
 .button-secondary:hover {
   border-color: rgba(249, 115, 22, 0.32);
-  background: rgba(255, 181, 118, 0.22);
+  background: #fff1e7;
 }
 
 .button-secondary:disabled {
