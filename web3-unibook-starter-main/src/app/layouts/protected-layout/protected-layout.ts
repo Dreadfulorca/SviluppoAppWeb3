@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -23,7 +23,18 @@ export class ProtectedLayout {
   private readonly authService = inject(AuthService);
 
   protected readonly currentUser = this.authService.currentUser;
+  protected readonly phoneMenuOpen = signal(false);
+
+  protected togglePhoneMenu(): void {
+    this.phoneMenuOpen.update((open) => !open);
+  }
+
+  protected closePhoneMenu(): void {
+    this.phoneMenuOpen.set(false);
+  }
+
   protected async logout(): Promise<void> {
+    this.closePhoneMenu();
     await this.authService.logout();
   }
 }

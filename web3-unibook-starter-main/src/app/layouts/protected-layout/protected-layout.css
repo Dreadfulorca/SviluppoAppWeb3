@@ -9,6 +9,7 @@
 }
 
 .app-header {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -23,6 +24,10 @@
   background: rgba(255, 255, 255, 0.9);
   box-shadow: var(--app-shadow);
   backdrop-filter: blur(16px);
+}
+
+.app-header--phone-menu-open {
+  z-index: 100;
 }
 
 .brand {
@@ -50,6 +55,77 @@
   justify-content: flex-end;
   gap: 0.45rem;
   flex-wrap: wrap;
+}
+
+.phone-menu-trigger {
+  --mat-icon-button-icon-color: #334155;
+  --mat-icon-button-state-layer-color: #f97316;
+  display: none;
+  flex: 0 0 auto;
+  z-index: 2;
+  color: #334155;
+}
+
+.phone-menu-trigger:hover,
+.phone-menu-trigger:focus-visible {
+  background: #fff1e7;
+  color: #9a3412;
+}
+
+.phone-menu {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+  display: none;
+  gap: 0.25rem;
+  width: min(18rem, calc(100vw - 1.5rem));
+  padding: 4.25rem 0.6rem 0.6rem;
+  border: 1px solid var(--app-border);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 20px 48px rgba(15, 23, 42, 0.18);
+}
+
+.phone-menu-user,
+.phone-menu-link,
+.phone-menu-logout {
+  min-height: 2.75rem;
+  border: 0;
+  border-radius: 0.75rem;
+  padding: 0.65rem 0.85rem;
+  background: transparent;
+  color: #334155;
+  font: inherit;
+  font-weight: 800;
+  text-align: left;
+  text-decoration: none;
+}
+
+.phone-menu-user {
+  border: 1px solid rgba(249, 115, 22, 0.26);
+  background: rgba(255, 181, 118, 0.24);
+  color: #9a3412;
+}
+
+.phone-menu-link:hover,
+.phone-menu-link:focus-visible,
+.phone-menu-logout:hover,
+.phone-menu-logout:focus-visible {
+  background: #fff1e7;
+  color: #9a3412;
+}
+
+.phone-menu-user:hover,
+.phone-menu-user:focus-visible {
+  border-color: rgba(109, 40, 217, 0.34);
+  background: rgba(109, 40, 217, 0.12);
+  color: #6d28d9;
+}
+
+.phone-menu-logout {
+  color: #c2410c;
+  cursor: pointer;
 }
 
 .create-link {
@@ -171,6 +247,8 @@
 
 @media (max-width: 520px) {
   .app-header {
+    align-items: center;
+    flex-direction: row;
     gap: 0.75rem;
     padding: 0.65rem;
   }
@@ -187,23 +265,14 @@
   }
 
   .app-nav {
+    display: none;
+  }
+
+  .phone-menu-trigger {
+    display: inline-flex;
+  }
+
+  .phone-menu {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    align-items: center;
-  }
-
-  .create-link {
-    justify-self: start;
-  }
-
-  .nav-link,
-  .logout-button {
-    width: 100%;
-    min-width: 0;
-  }
-
-  .user-chip,
-  .logout-button {
-    grid-column: 1 / -1;
   }
 }

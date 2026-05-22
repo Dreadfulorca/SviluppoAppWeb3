@@ -1,5 +1,5 @@
 <div class="app-shell">
-  <mat-toolbar class="app-header">
+  <mat-toolbar class="app-header" [class.app-header--phone-menu-open]="phoneMenuOpen()">
     <a class="brand" routerLink="/home" aria-label="Vai alla home">
       <img class="brand-logo" src="/login-logo.png" alt="" aria-hidden="true" />
       <span>Looply</span>
@@ -38,6 +38,34 @@
         Logout
       </button>
     </nav>
+
+    <button
+      mat-icon-button
+      type="button"
+      class="phone-menu-trigger"
+      aria-controls="phone-navigation"
+      [attr.aria-label]="phoneMenuOpen() ? 'Chiudi menu di navigazione' : 'Apri menu di navigazione'"
+      [attr.aria-expanded]="phoneMenuOpen()"
+      (click)="togglePhoneMenu()"
+    >
+      <mat-icon aria-hidden="true">{{ phoneMenuOpen() ? 'close' : 'menu' }}</mat-icon>
+    </button>
+
+    @if (phoneMenuOpen()) {
+    <nav id="phone-navigation" class="phone-menu" aria-label="Navigazione mobile">
+      @if (currentUser(); as user) {
+      <a routerLink="/profile" class="phone-menu-user" (click)="closePhoneMenu()">
+        {{ user.firstName }} {{ user.lastName }}
+      </a>
+      }
+
+      <a routerLink="/posts/new" class="phone-menu-link" (click)="closePhoneMenu()">Pubblica</a>
+      <a routerLink="/home" class="phone-menu-link" (click)="closePhoneMenu()">Home</a>
+      <a routerLink="/profile" class="phone-menu-link" (click)="closePhoneMenu()">Profilo</a>
+      <a routerLink="/users/search" class="phone-menu-link" (click)="closePhoneMenu()">Cerca</a>
+      <button type="button" class="phone-menu-logout" (click)="logout()">Logout</button>
+    </nav>
+    }
   </mat-toolbar>
 
   <main class="app-main">
