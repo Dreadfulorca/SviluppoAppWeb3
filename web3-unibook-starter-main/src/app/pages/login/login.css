@@ -65,6 +65,15 @@ input:focus {
   border-color: var(--app-primary);
 }
 
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--app-text);
+  caret-color: var(--app-text);
+  box-shadow: 0 0 0 1000px rgba(255, 181, 118, 0.26) inset;
+  transition: background-color 9999s ease-out 0s;
+}
+
 input.is-invalid {
   border-color: rgba(185, 28, 28, 0.55);
   background: #fff1f2;

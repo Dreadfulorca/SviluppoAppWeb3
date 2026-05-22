@@ -81,7 +81,15 @@ mat-card-actions {
 }
 
 .like-action {
+  --mat-icon-button-state-layer-color: #f97316;
   color: #e11d48;
+}
+
+.like-action:hover,
+.like-action:focus-visible,
+.danger-action:hover,
+.danger-action:focus-visible {
+  background: rgba(255, 181, 118, 0.26);
 }
 
 .like-icon {
@@ -92,8 +100,8 @@ mat-card-actions {
 }
 
 .danger-action {
-  --mdc-text-button-label-text-color: var(--app-danger);
-  --mat-text-button-state-layer-color: var(--app-danger);
+  --mat-button-text-label-text-color: var(--app-danger);
+  --mat-button-text-state-layer-color: #f97316;
   color: var(--app-danger);
   font-weight: 750;
 }
