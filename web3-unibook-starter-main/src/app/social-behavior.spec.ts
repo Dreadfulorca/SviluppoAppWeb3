@@ -11,7 +11,9 @@ import { PostsApiService } from './core/api/posts-api.service';
 import { UsersApiService } from './core/api/users-api.service';
 import { UserPublic } from './core/api/models/user.types';
 import { AuthService } from './core/auth/auth.service';
+import { ProtectedLayout } from './layouts/protected-layout/protected-layout';
 import { FeedService } from './pages/home/feed.service';
+import { Profile } from './pages/profile/profile';
 import { PublicProfile } from './pages/public-profile/public-profile';
 import { PostCard } from './shared/post-card/post-card';
 
@@ -25,6 +27,11 @@ const currentUser = {
   bio: 'Studente di informatica.',
   followersCount: 3,
   followingCount: 5,
+};
+
+const currentUserWithAvatar = {
+  ...currentUser,
+  avatarUrl: 'https://example.com/mario-avatar.jpg',
 };
 
 const publicUser = {
@@ -233,5 +240,92 @@ describe('social behavior', () => {
     await fixture.whenStable();
 
     expect(removedSpy).not.toHaveBeenCalled();
+  });
+
+  it('opens and closes the phone navigation from the toolbar trigger', () => {
+    TestBed.configureTestingModule({
+      providers: [
+        provideRouter([]),
+        {
+          provide: AuthService,
+          useValue: {
+            currentUser: signal(currentUser),
+            logout: vi.fn(),
+          },
+        },
+      ],
+    });
+
+    const fixture = TestBed.createComponent(ProtectedLayout);
+    fixture.detectChanges();
+
+    const trigger = fixture.nativeElement.querySelector(
+      '.phone-menu-trigger',
+    ) as HTMLButtonElement;
+
+    expect(trigger.getAttribute('aria-expanded')).toBe('false');
+    expect(fixture.nativeElement.querySelector('#phone-navigation')).toBeNull();
+
+    trigger.click();
+    fixture.detectChanges();
+
+    expect(trigger.getAttribute('aria-expanded')).toBe('true');
+    expect(trigger.textContent).toContain('close');
+    expect(fixture.nativeElement.querySelector('#phone-navigation')).not.toBeNull();
+
+    trigger.click();
+    fixture.detectChanges();
+
+    expect(trigger.getAttribute('aria-expanded')).toBe('false');
+    expect(trigger.textContent).toContain('menu');
+    expect(fixture.nativeElement.querySelector('#phone-navigation')).toBeNull();
+  });
+
+  it('opens the profile avatar in a fullscreen image dialog', async () => {
+    TestBed.configureTestingModule({
+      providers: [
+        provideNoopAnimations(),
+        provideRouter([]),
+        {
+          provide: AuthService,
+          useValue: {
+            currentUser: signal(currentUserWithAvatar),
+          },
+        },
+        {
+          provide: UsersApiService,
+          useValue: {
+            getPosts: vi.fn().mockReturnValue(of([])),
+          },
+        },
+        {
+          provide: PostsApiService,
+          useValue: {
+            like: vi.fn().mockReturnValue(of(undefined)),
+            unlike: vi.fn().mockReturnValue(of(undefined)),
+            remove: vi.fn().mockReturnValue(of(undefined)),
+          },
+        },
+      ],
+    });
+
+    const fixture = TestBed.createComponent(Profile);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const avatarButton = fixture.nativeElement.querySelector(
+      'button[aria-label="Apri la tua foto profilo"]',
+    ) as HTMLButtonElement;
+    avatarButton.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const dialogImage = document.body.querySelector(
+      '.image-viewer img',
+    ) as HTMLImageElement | null;
+
+    expect(dialogImage?.src).toBe(currentUserWithAvatar.avatarUrl);
+    expect(dialogImage?.alt).toBe('Foto profilo di Mario Rossi');
   });
 });
